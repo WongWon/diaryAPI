@@ -36,16 +36,7 @@ namespace diaryAPI
         public void ConfigureServices(IServiceCollection services)
 
         {
-            services.AddCors(options =>
-            {
-                options.AddPolicy(name: MyAllowSpecificOrigins,
-                    builder =>
-                    {
-                        builder.WithOrigins("http://localhost:3000")
-                                            .AllowAnyHeader()
-                                            .AllowAnyMethod();
-                    });
-            });
+            
 
             services.AddControllers();
             var connection = Configuration.GetConnectionString("diaryContext");
@@ -63,7 +54,7 @@ namespace diaryAPI
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
 
-            app.UseCors(MyAllowSpecificOrigins);
+           
 
             if (env.IsDevelopment())
             {
