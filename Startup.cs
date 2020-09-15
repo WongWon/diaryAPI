@@ -36,7 +36,7 @@ namespace diaryAPI
         public void ConfigureServices(IServiceCollection services)
 
         {
-            
+            services.AddCors();
 
             services.AddControllers();
             var connection = Configuration.GetConnectionString("diaryContext");
@@ -54,7 +54,13 @@ namespace diaryAPI
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
 
-           
+            app.UseCors(builder => builder
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .SetIsOriginAllowed((host) => true)
+                .AllowCredentials()
+            );
+
 
             if (env.IsDevelopment())
             {
