@@ -14,8 +14,13 @@ using Microsoft.EntityFrameworkCore;
 using diaryAPI.Model;
 using Microsoft.OpenApi.Models;
 
+
+
 namespace diaryAPI
+
+
 {
+
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -25,9 +30,23 @@ namespace diaryAPI
 
         public IConfiguration Configuration { get; }
 
+        private readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
+
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: MyAllowSpecificOrigins,
+                    builder =>
+                    {
+                        builder.WithOrigins("http://localhost:3000")
+                                            .AllowAnyHeader()
+                                            .AllowAnyMethod();
+                    });
+            });
+
             services.AddControllers();
             var connection = Configuration.GetConnectionString("diaryContext");
             services.AddDbContext<diaryContext>(options => options.UseSqlServer(connection));
@@ -37,12 +56,15 @@ namespace diaryAPI
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Diary", Version = "v1" });
             });
 
-            services.AddCors();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
+            app.UseCors(MyAllowSpecificOrigins);
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -68,12 +90,7 @@ namespace diaryAPI
                 c.RoutePrefix = string.Empty; // launch swagger from root
             });
 
-            app.UseCors(builder => builder
-           .AllowAnyHeader()
-           .AllowAnyMethod()
-           .SetIsOriginAllowed((host) => true)
-           .AllowCredentials()
-       );
+ 
         }
     }
 }
