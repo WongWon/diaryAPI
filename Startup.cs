@@ -85,6 +85,7 @@ namespace diaryAPI
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Diary API V1");
+                c.RoutePrefix = string.Empty;
             });
 
  
