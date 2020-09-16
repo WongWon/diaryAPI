@@ -54,13 +54,6 @@ namespace diaryAPI
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
 
-            app.UseCors(builder => builder
-                .AllowAnyHeader()
-                .AllowAnyMethod()
-                .SetIsOriginAllowed((host) => true)
-                .AllowCredentials()
-            );
-
 
             if (env.IsDevelopment())
             {
@@ -70,6 +63,14 @@ namespace diaryAPI
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors(builder => builder
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .SetIsOriginAllowed((host) => true)
+              .AllowCredentials()
+          );
+
 
             app.UseAuthorization();
 
