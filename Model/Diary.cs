@@ -15,7 +15,7 @@ namespace diaryAPI.Model
         [StringLength(50)]
         public string Title { get; set; }
         [Column("entry")]
-        [StringLength(400)]
+        [StringLength(255)]
         public string Entry { get; set; }
     }
 }
